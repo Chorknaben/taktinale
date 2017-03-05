@@ -27,8 +27,8 @@ function anmelden(req, res) {
                     {siteKey: conf.siteKey, secretKey: conf.secretKey});
                 let key = body["g-recaptcha-response"];
                 rec.validate(key)
-                    .then(cb)
-                    .catch(cb);
+                    .then(() => cb(null))
+                    .catch((err) => cb({message : err}));
             } else {
                 cb(null);
             }
@@ -62,8 +62,8 @@ function anmelden(req, res) {
             cb(null);
         }
     ], function asyncResultCallback(error) {
-        sails.log.warn("/anmelden failed with error %s, rejecting.", error)
         if (error) {
+            sails.log.warn("/anmelden failed with error %s, rejecting.", error)
             if (error.code) {
                 res.send(error.code, error);
             } else {

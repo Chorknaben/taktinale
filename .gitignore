@@ -1,9 +1,13 @@
 # IDE files
 .idea
+assets/
+.tmp/
 
 # Logs
 logs
 *.log
+
+config/taktinale.js
 
 # Runtime data
 pids
