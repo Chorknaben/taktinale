@@ -2,6 +2,7 @@
 .idea
 assets/
 .tmp/
+.vscode/chrome
 
 # Logs
 logs
