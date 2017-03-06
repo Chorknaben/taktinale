@@ -1,0 +1,16 @@
+version: '2'
+services:
+  chor-taktinale:
+    build: .
+    image: chor-taktinale
+    restart: always
+    depends_on: 
+      - taktinale-mysql
+    ports: 
+      - 10010:10010
+  taktinale-mysql:
+    image: mysql
+    restart: always
+    environment: 
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=taktinale

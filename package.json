@@ -29,6 +29,7 @@
     "recaptcha2": "^1.3.2",
     "sails": "^0.11.5",
     "sails-disk": "~0.10.0",
+    "sails-mysql": "^0.11.5",
     "swagger-sails-hook": "^0.1.0"
   },
   "devDependencies": {
