@@ -33,7 +33,6 @@
     "swagger-sails-hook": "^0.1.0"
   },
   "devDependencies": {
-    "sails-hook-autoreload": "^0.13.2",
     "should": "^5.2.0",
     "supertest": "^0.15.0"
   },

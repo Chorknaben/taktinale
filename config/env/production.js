@@ -18,8 +18,9 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-     connection: 'someMysqlServer'
+     connection: 'localDiskDb'
   },
+  port: 10010,
 
   /***************************************************************************
    * Set the port in the production environment to 80                        *

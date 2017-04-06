@@ -36,4 +36,7 @@ module.exports.connections = {
     password: 'password',
     database: 'taktinale'
   },
+localDiskDb: {
+    adapter: "sails-disk"
+  }
 };
