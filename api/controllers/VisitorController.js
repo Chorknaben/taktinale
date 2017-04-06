@@ -51,7 +51,8 @@ function anmelden(req, res) {
                 "name": body.name,
                 "vorname": body.vorname,
                 "email": body.email,
-                "numguests": body.numguests
+                "numguests": body.numguests,
+                "numkids": body.numkids
             }).exec(cb);
         },
         sendConfirmationEmail,

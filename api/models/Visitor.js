@@ -28,6 +28,10 @@ module.exports = {
       numguests: {
         type: "integer",
         required: true
+      },
+      numkids: {
+        type: "integer",
+        required: true
       }
   }
 };
