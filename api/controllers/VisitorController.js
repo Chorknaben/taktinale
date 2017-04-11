@@ -82,10 +82,29 @@ function sendConfirmationEmail(forRecord, cb){
     let transporter = nodemailer.createTransport(
         conf.nodeMailerTransport);
 
-    sails.log("Sending confirmation Email");
+    sails.log("Sending confirmation Email + receipt to taktinale@chorknaben-biberach.de");
+    transporter.sendMail({
+        from : conf.email.from,
+        to : "taktinale@chorknaben-biberach.de",
+	bcc : conf.email.bcc,
+        envelope: {
+        "from" : conf.email.from,
+        "to" : "taktinale@chorknaben-biberach.de, Receipt Receiver <taktinale@chorknaben-biberach.de>"
+        },
+        alternatives: [{
+            contentType: "text/calendar",
+            content: cal.toString()
+        }],
+        subject : forRecord.email,
+	text: JSON.stringify(forRecord)
+    }, function (info) {
+	sails.log("Receipt Status: %s", info);
+    });
+
     transporter.sendMail({
         from : conf.email.from,
         to : forRecord.email,
+	bcc : conf.email.bcc,
         envelope: {
         "from" : conf.email.from,
         "to" : util.format("%s, %s %s <%s>", 
