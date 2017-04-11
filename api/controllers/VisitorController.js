@@ -77,46 +77,45 @@ function anmelden(req, res) {
 function sendConfirmationEmail(forRecord, cb){
     let conf = sails.config.taktinale;
     let cal  = ical(conf.email.ical);
+    
+    conf.email.icalEvent["description"] = conf.email.textMessage(forRecord);
     cal.createEvent(conf.email.icalEvent);
 
     let transporter = nodemailer.createTransport(
         conf.nodeMailerTransport);
 
-    sails.log("Sending confirmation Email + receipt to taktinale@chorknaben-biberach.de");
-    transporter.sendMail({
-        from : conf.email.from,
-        to : "taktinale@chorknaben-biberach.de",
-	bcc : conf.email.bcc,
-        envelope: {
-        "from" : conf.email.from,
-        "to" : "taktinale@chorknaben-biberach.de, Receipt Receiver <taktinale@chorknaben-biberach.de>"
-        },
-        alternatives: [{
-            contentType: "text/calendar",
-            content: cal.toString()
-        }],
-        subject : forRecord.email,
-	text: JSON.stringify(forRecord)
-    }, function (info) {
-	sails.log("Receipt Status: %s", info);
-    });
+    if (conf.email.receipts) {
+	for (let mail of conf.email.receipts) {
+	    sails.log("Sending Receipt to %s", mail)
+	    transporter.sendMail({
+		from : conf.email.from,
+		to : mail,
+		envelope: {
+		    "from" : conf.email.from,
+		    "to" : util.format("%s, Receipt Receiver <%s>", mail, mail)
+		},
+		icalEvent: { content: cal.toString() },
+		subject : util.format("Anmeldung von %s", forRecord.email),
+		text: JSON.stringify(forRecord),
+		html: util.format("<p><code>%s</code></p>", JSON.stringify(forRecord)),
+	    }, function (info) {
+		sails.log("Receipt Status: %s", info);
+	    });
+	}
+    }
 
     transporter.sendMail({
         from : conf.email.from,
         to : forRecord.email,
-	bcc : conf.email.bcc,
         envelope: {
         "from" : conf.email.from,
         "to" : util.format("%s, %s %s <%s>", 
             forRecord.email, forRecord.vorname, 
             forRecord.name, forRecord.email)
         },
-        alternatives: [{
-            contentType: "text/calendar",
-            content: cal.toString()
-
-        }],
+	icalEvent: { content: cal.toString() },
         subject : conf.email.subject,
+	text: conf.email.textMessage(forRecord),
         html: conf.email.message(forRecord)
     }, cb);
 }
